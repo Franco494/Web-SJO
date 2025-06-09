@@ -10,6 +10,9 @@
     <link href="assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet">
     <link href="assets/css/johndoe.css" rel="stylesheet">
     
+    <!-- Flatpickr CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+
     <style>
         .sidebar {
             height: 100%;
@@ -61,17 +64,32 @@
         <div class="container">
             <h1>Agenda</h1>
             
-            <!-- Calendario de Elfsight -->
+            <!-- Calendario Flatpickr -->
             <div id="calendar">
-                <!-- Elfsight Event Calendar -->
-                <script src="https://static.elfsight.com/platform/platform.js" async></script>
-                <div class="elfsight-app-a569cc33-e56d-4ad1-a828-4bd0de3a5366" data-elfsight-app-lazy></div>
+                <input type="text" id="flatpickr" class="form-control" placeholder="Selecciona una fecha">
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Inicializar Flatpickr para el calendario
+            flatpickr("#flatpickr", {
+                mode: "multiple", // Permite seleccionar múltiples fechas
+                dateFormat: "Y-m-d", // Formato de la fecha
+                locale: "es", // Configuración regional en español
+                minDate: "today", // No permitir seleccionar fechas pasadas
+                disableMobile: true, // Deshabilita la versión móvil si se está usando en escritorio
+            });
+        });
+    </script>
+
     <script src="assets/js/johndoe.js"></script>
 </body>
 
 </html>
+
