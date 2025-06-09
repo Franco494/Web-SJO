@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Admin - Parroquia San José Obrero</title>
+    
+    <!-- Enlaces CSS proporcionados -->
+    <link href="assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet">
+    <link href="assets/css/johndoe.css" rel="stylesheet">
+    
+    <style>
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra lateral -->
+    <div class="sidebar">
+        <h3 class="text-white text-center">Menu Admin</h3>
+        <a href="#misa">Misa</a>
+        <a href="#bautismo">Bautismo</a>
+        <a href="#matrimonio">Matrimonio</a>
+        <a href="#documento">Documento</a>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <div class="container">
+            <h1>Agenda</h1>
+            
+            <!-- Calendario de Elfsight -->
+            <div id="calendar">
+                <!-- Elfsight Event Calendar -->
+                <script src="https://static.elfsight.com/platform/platform.js" async></script>
+                <div class="elfsight-app-a569cc33-e56d-4ad1-a828-4bd0de3a5366" data-elfsight-app-lazy></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/johndoe.js"></script>
+</body>
+
+</html>
