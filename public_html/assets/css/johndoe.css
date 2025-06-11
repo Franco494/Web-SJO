@@ -40,6 +40,15 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
+  --color-bg: #EBECF2;
+  --color-surface: #FFFFFF;
+  --color-border: #9A9EB2;
+  --color-text-primary: #000;
+  --color-text-secondary: #3F435D;
+  --color-tooltip-bg: #2A2E33;
+  --color-tooltip-text: #fff;
+  --shadow-border: rgba(0, 0, 0, 0.1);
+  --user-bg-color: #FAFAFC;
   --font-family-sans-serif: "Source Sans Pro", sans-serif;
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
@@ -11681,4 +11690,94 @@ pre .code {
   background: #F85C70;
   display: block;
   margin-top: 10px;
+}
+.sidebar{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 15rem;
+  height: 100%;
+  padding: 1.4rem;
+  background-color: var(--white);
+  box-shadow: 1px 0px 10px var(--shadow-border);
+  transition: width 0.5s ease;
+}
+.menu-btn{
+  
+  position: absolute;
+  top: 3.5%;
+  right: -.87rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background-color: #fff;
+  color: #757575;
+  box-shadow: 2px 2px 5px var(--shadow-border);
+  cursor: pointer;
+  transition: right 0.3s ease;
+}
+
+.menu-btn i{
+  font-size: 1.2rem;
+}
+.brand{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-left: 0.455rem;
+  margin-bottom: 1.8rem;
+  overflow: hidden;
+}
+
+.brand img {
+  width: 2rem;
+}
+.brand span{
+  font-size: 1.1rem;
+  font-weight: 600 ;
+  color: var(--color-text-primary);
+}
+
+.menu-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search{
+  display: flex;
+  width: 100%;
+  padding: 0.55rem 0;
+  margin-bottom: 1.2rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 0 0 1px var(--color-border);
+  cursor: pointer;
+  transition: box-shadow 0.5s ease;
+}
+
+.search:hover{
+  box-shadow: 0 0 0 1px var(--color-text-primary);
+}
+
+.search i{
+  font-size: 1.40rem;
+  color: var(--color-text-secondary);
+  padding:  0 0.8rem;
+}
+
+.search:hover i{
+  color: var(--color-text-primary);
+}
+
+.search input{
+  width: 70%;
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: none;
+  outline: none;
 }

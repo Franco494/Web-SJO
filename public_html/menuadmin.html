@@ -5,77 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Admin - Parroquia San José Obrero</title>
-    
+
     <!-- Enlaces CSS proporcionados -->
     <link href="assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet">
     <link href="assets/css/johndoe.css" rel="stylesheet">
-    
+
     <!-- Flatpickr CSS -->
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 
-    <style>
-        .sidebar {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #343a40;
-            padding-top: 20px;
-        }
-
-        .sidebar a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .sidebar a:hover {
-            background-color: #575757;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-
-        #calendar {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 
 <body>
-    <!-- Barra lateral -->
     <div class="sidebar">
-        <h3 class="text-white text-center">Menu Admin</h3>
-        <a href="#misa">Misa</a>
-        <a href="#bautismo">Bautismo</a>
-        <a href="#matrimonio">Matrimonio</a>
-        <a href="#documento">Documento</a>
-    </div>
-
-    <!-- Contenido principal -->
-    <div class="main-content">
-        <div class="container">
-            <h1>Agenda</h1>
-            
-            <!-- Calendario Flatpickr -->
-            <div id="calendar">
-                <input type="text" id="flatpickr" class="form-control" placeholder="Selecciona una fecha">
+        <div class="menu-btn">
+            <i class="ti-angle-right">  
+            </i>
+        </div>  
+        <div class="brand">
+            <img src="assets/imgs/logoSJO.jpg" alt="logo">
+            <span>San Jose Obrero</span>
+        </div>
+        <div class="menu-container">
+            <div class="search">
+                <i class="ti-search"></i>
+                <input type="search" placeholder="search">
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+
+
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
     <script>
+        // Función para abrir y cerrar la barra lateral
+        function toggleNav() {
+            var sidebar = document.getElementById("mySidebar");
+            var content = document.querySelector(".main-content");
+
+            if (sidebar.style.width === "250px") {
+                // Si la barra está abierta, la cerramos
+                sidebar.style.width = "0";
+                content.style.marginLeft = "0";
+            } else {
+                // Si la barra está cerrada, la abrimos
+                sidebar.style.width = "250px";
+                content.style.marginLeft = "250px";
+            }
+        }
+
         $(document).ready(function () {
             // Inicializar Flatpickr para el calendario
             flatpickr("#flatpickr", {
@@ -87,9 +66,7 @@
             });
         });
     </script>
-
     <script src="assets/js/johndoe.js"></script>
 </body>
 
 </html>
-
