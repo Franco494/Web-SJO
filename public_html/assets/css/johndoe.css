@@ -11696,9 +11696,10 @@ pre .code {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
   width: 15rem;
   height: 100%;
-  padding: 1.4rem;
+  padding: 1.4rem 1rem 0 1rem;
   background-color: var(--white);
   box-shadow: 1px 0px 10px var(--shadow-border);
   transition: width 0.5s ease;
@@ -11735,7 +11736,7 @@ pre .code {
 }
 
 .brand img {
-  width: 2rem;
+  width: 1rem;
 }
 .brand span{
   font-size: 1.1rem;
@@ -11745,6 +11746,7 @@ pre .code {
 
 .menu-container{
   display: flex;
+  height: 100%;
   flex-direction: column;
   align-items: center;
 }
@@ -11780,4 +11782,100 @@ pre .code {
   color: var(--color-text-primary);
   border: none;
   outline: none;
+}
+
+.menu{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem ;
+}
+.menu .menu-item{
+  position: relative;
+  list-style: none;
+  overflow: hidden;
+
+
+}
+.menu .menu-link{
+  display: flex;
+  padding: 0.55rem 0;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: 0.3rem;
+  
+}
+.menu-item:hover .menu-link,
+.sub-menu .sub-menu-link:hover,
+.menu-item.active .menu-link{
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+}
+
+.menu-link i{
+  font-size: 1.35rem;
+  padding: 0 0.8rem;
+}
+
+.menu-link i:last-child{
+  margin-left: auto;
+
+}
+.menu-link span{
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.sub.menu{
+  border: 2px solid red;
+}
+
+.sub-menu .sub-menu-link{
+  display: flex;
+  margin-left: 2.5rem;
+  padding: 0.55rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: 0.3rem;
+}
+
+
+
+.sub-menu::before{
+  content: '';
+  position: absolute;
+  margin-left: 1.5rem;
+  width: 0.1rem;
+  height: 100%;
+  background-color: var(--color-border);
+}
+.sidebar-header{
+  width: 100%;
+}
+.sidebar-footer{
+  width: 100%;
+  padding: 1rem 0;
+  box-shadow: 0 -0.02rem 0 0 var(--color-border);
+}
+.user{
+  display: flex;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+.user-data{
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.user-data .name{
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.user-data .email{
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
 }

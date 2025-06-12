@@ -14,23 +14,103 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 
 </head>
-
+<style>
+    * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+body {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-bg);
+}
+</style>
 <body>
     <div class="sidebar">
-        <div class="menu-btn">
-            <i class="ti-angle-right">  
-            </i>
-        </div>  
-        <div class="brand">
-            <img src="assets/imgs/logoSJO.jpg" alt="logo">
-            <span>San Jose Obrero</span>
+        <div class="sidebar-header">
+            <div class="menu-btn">
+                <i class="ti-angle-right"></i>
+            </div>  
+            <div class="brand">
+                <img src="assets/imgs/logoSJO.jpg" alt="logo">
+                <span>San Jose Obrero</span>
+            </div>
         </div>
         <div class="menu-container">
             <div class="search">
                 <i class="ti-search"></i>
                 <input type="search" placeholder="search">
             </div>
+            <ul class="menu">
+                <li class="menu-item menu-item-static active">
+                    <a href="#" class="menu-link">
+                        <i class="ti-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="menu-item menu-item-static">
+                    <a href="#" class="menu-link">
+                        <i class="ti-bar-chart"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item menu-item-dropdown">
+                    <a href="#" class="menu-link">
+                        <i class="ti-anchor"></i>
+                        <span>Servicios</span>
+                        <i class="ti-angle-down"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="#" class="sub-menu-link">Misas</a></li>
+                        <li><a href="#" class="sub-menu-link">Sacramentos</a></li>
+                        <li><a href="#" class="sub-menu-link">Documentos</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item menu-item-static">
+                    <a href="#" class="menu-link">
+                        <i class="ti-clipboard"></i>
+                        <span>Task</span>
+                    </a>
+                </li>
+                <li class="menu-item menu-item-dropdown">
+                    <a href="#" class="menu-link">
+                        <i class="ti-file"></i>
+                        <span>Agenda</span>
+                        <i class="ti-angle-down"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="#" class="sub-menu-link">Misas</a></li>
+                        <li><a href="#" class="sub-menu-link">Sacramentos</a></li>
+                        <li><a href="#" class="sub-menu-link">Imprimir</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
+        <div class="sidebar-footer">
+            <ul class="menu">
+                <li class="menu-item menu-item-static">
+                    <a href="#" class="menu-link">
+                        <i class="ti-bell"></i>
+                        <span>Notificaciones</span>
+                    </a>
+                </li>
+                <li class="menu-item menu-item-static">
+                    <a href="#" class="menu-link">
+                        <i class="ti-power-off"></i>
+                        <span>Salir</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="user">
+            <div class="user-data">
+                <span class="name">Joaquin Cupe</span>
+                <span class="rol">Secretario</span>
+            </div>
+        </div>    
     </div>
 
 
