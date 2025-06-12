@@ -11863,19 +11863,22 @@ pre .code {
   display: flex;
   overflow: hidden;
   margin-top: 1rem;
+  padding: 0 3rem;
 }
 .user-data{
   display: flex;
   flex-direction: column;
   overflow: hidden;
   white-space: nowrap;
+  margin-top: 1rem;
 }
 .user-data .name{
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-text-primary);
 }
-.user-data .email{
+.user-data .rol{
   font-size: 0.7rem;
   color: var(--color-text-secondary);
+  padding: 0 1rem;
 }
