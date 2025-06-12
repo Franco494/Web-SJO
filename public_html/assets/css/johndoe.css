@@ -57,6 +57,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+
 }
 
 html {
@@ -11725,7 +11726,8 @@ pre .code {
 .menu-btn i{
   font-size: 1.2rem;
 }
-.brand{
+
+.logo{
   width: 100%;
   display: flex;
   align-items: center;
@@ -11735,10 +11737,11 @@ pre .code {
   overflow: hidden;
 }
 
-.brand img {
+.logo img {
   width: 1rem;
 }
-.brand span{
+
+.logo span{
   font-size: 1.1rem;
   font-weight: 600 ;
   color: var(--color-text-primary);
@@ -11842,8 +11845,6 @@ pre .code {
   border-radius: 0.3rem;
 }
 
-
-
 .sub-menu::before{
   content: '';
   position: absolute;
@@ -11851,7 +11852,8 @@ pre .code {
   width: 0.1rem;
   height: 100%;
   background-color: var(--color-border);
-}
+} 
+
 .sidebar-header{
   width: 100%;
 }
@@ -11882,4 +11884,4 @@ pre .code {
   font-size: 0.7rem;
   color: var(--color-text-secondary);
   padding: 0 1rem;
-}
+} 
