@@ -150,6 +150,13 @@ function initMap() {
 }
 
 const menusItemsDropdown = document.querySelectorAll('.menu-item-dropdown');
+const sidebar = document.getElementById('sidebar');
+const menuBtn = document.getElementById('menu-btn');
+
+menuBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('minimize'); 
+});
+
 menusItemsDropdown.forEach((menuItem) => {
     menuItem.addEventListener('click', () => {
         const subMenu = menuItem.querySelector('.sub-menu');
@@ -176,3 +183,4 @@ menusItemsDropdown.forEach((menuItem) => {
         });  
     });
 });
+
