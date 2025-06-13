@@ -78,7 +78,7 @@ body {
                 </li>
                 <li class="menu-item menu-item-dropdown">
                     <a href="#" class="menu-link">
-                        <i class="ti-file"></i>
+                        <i class="ti-book"></i>
                         <span>Agenda</span>
                         <i class="ti-angle-down"></i>
                     </a>
@@ -92,7 +92,7 @@ body {
         </div>
         <div class="sidebar-footer">
             <ul class="menu">
-                <li class="menu-item menu-item-static">
+                <li class="menu-item menu-item-+¿8/tatic">
                     <a href="#" class="menu-link">
                         <i class="ti-bell"></i>
                         <span>Notificaciones</span>
@@ -104,14 +104,14 @@ body {
                         <span>Salir</span>
                     </a>
                 </li>
-            </ul>
-        </div>
+            </ul>    
+        </div> 
         <div class="user">
-            <div class="user-data">
+            <div class="user-data">                    
                 <span class="name">Joaquin Cupe</span>
                 <span class="rol">Secretario</span>
             </div>
-        </div> 
+        </div>
     </div>
 
 
@@ -119,34 +119,6 @@ body {
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        // Función para abrir y cerrar la barra lateral
-        function toggleNav() {
-            var sidebar = document.getElementById("mySidebar");
-            var content = document.querySelector(".main-content");
-
-            if (sidebar.style.width === "250px") {
-                // Si la barra está abierta, la cerramos
-                sidebar.style.width = "0";
-                content.style.marginLeft = "0";
-            } else {
-                // Si la barra está cerrada, la abrimos
-                sidebar.style.width = "250px";
-                content.style.marginLeft = "250px";
-            }
-        }
-
-        $(document).ready(function () {
-            // Inicializar Flatpickr para el calendario
-            flatpickr("#flatpickr", {
-                mode: "multiple", // Permite seleccionar múltiples fechas
-                dateFormat: "Y-m-d", // Formato de la fecha
-                locale: "es", // Configuración regional en español
-                minDate: "today", // No permitir seleccionar fechas pasadas
-                disableMobile: true, // Deshabilita la versión móvil si se está usando en escritorio
-            });
-        });
-    </script>
     <script src="assets/js/johndoe.js"></script>
 </body>
 
