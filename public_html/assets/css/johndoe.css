@@ -11749,7 +11749,7 @@ pre .code {
 
 .menu-container{
   display: flex;
-  
+  height: 80%;
   flex-direction: column;
   align-items: center;
 }
@@ -11793,6 +11793,9 @@ pre .code {
   display: flex;
   flex-direction: column;
   gap: 0.5rem ;
+}
+.sub-menu{
+  height: 0;
 }
 .menu .menu-item{
   position: relative;
@@ -11866,6 +11869,8 @@ pre .code {
 .user{
   display: flex;
   overflow: hidden;
+  /* margin-top: 1rem; */
+  padding: 0;
 }
 .user-data{
   display: flex;
