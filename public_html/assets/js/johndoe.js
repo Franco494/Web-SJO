@@ -163,6 +163,16 @@ menusItemsDropdown.forEach((menuItem) => {
               subMenu.style.height = '0';
               subMenu.style.padding = '0';
           }
-        }  
+        }
+        menusItemsDropdown.forEach((item) => {
+            if (item !== menuItem) {
+                const otherSubMenu = item.querySelector('.sub-menu');
+                if (otherSubMenu) {
+                    item.classList.remove('sub-menu-toggle');
+                    otherSubMenu.style.height = '0';
+                    otherSubMenu.style.padding = '0';
+                }
+            }
+        });  
     });
 });
