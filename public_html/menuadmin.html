@@ -1,1424 +1,820 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Parroquia San José Obrero</title>
+    <title>Sistema de Gestión Parroquial San José</title>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #2c5282;
-            --secondary-color: #3182ce;
-            --accent-color: #f7fafc;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-            --border-color: #e2e8f0;
-            --success-color: #38a169;
-            --warning-color: #d69e2e;
-            --danger-color: #e53e3e;
-            --sidebar-width: 280px;
-            --sidebar-collapsed-width: 70px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8fafc;
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        /* SIDEBAR STYLES */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: var(--sidebar-width);
-            height: 100vh;
-            background: linear-gradient(180deg, var(--primary-color) 0%, #1a365d 100%);
-            color: white;
-            transition: width 0.3s ease;
-            z-index: 1000;
-            overflow-y: auto;
-        }
-
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed-width);
-        }
-
-        .sidebar-header {
-            padding: 1.5rem 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo img {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .logo span {
-            font-weight: 600;
-            font-size: 1.1rem;
-            white-space: nowrap;
-        }
-
-        .menu-btn {
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-        }
-
-        .menu-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .search {
-            padding: 1rem;
-            position: relative;
-        }
-
-        .search input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: none;
-            border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            outline: none;
-        }
-
-        .search input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .search i {
-            position: absolute;
-            left: 1.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .menu {
-            list-style: none;
-            padding: 0 1rem;
-        }
-
-        .menu-item {
-            margin-bottom: 0.25rem;
-        }
-
-        .menu-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.2s;
-            gap: 0.75rem;
-        }
-
-        .menu-link:hover,
-        .menu-item.active .menu-link {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .menu-link i {
-            width: 20px;
-            text-align: center;
-        }
-
-        .sub-menu {
-            list-style: none;
-            margin-left: 2.5rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        .menu-item-dropdown.open .sub-menu {
-            display: block;
-        }
-
-        .sub-menu-link {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .sub-menu-link:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: white;
-        }
-
-        .sidebar-footer {
-            margin-top: auto;
-            padding: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .user {
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .user-data .name {
-            font-weight: 600;
-            display: block;
-        }
-
-        .user-data .rol {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* MAIN CONTENT */
-        .main-content {
-            margin-left: var(--sidebar-width);
-            transition: margin-left 0.3s ease;
-            min-height: 100vh;
-        }
-
-        .main-content.sidebar-collapsed {
-            margin-left: var(--sidebar-collapsed-width);
-        }
-
-        .header {
-            background: white;
-            padding: 1rem 2rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: between;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            margin-left: auto;
-        }
-
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #2a4975;
-        }
-
-        .content {
-            padding: 2rem;
-        }
-
-        /* DASHBOARD CARDS */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border-color);
-        }
-
-        .stat-card {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .stat-icon.primary {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-        }
-
-        .stat-icon.success {
-            background: linear-gradient(45deg, var(--success-color), #48bb78);
-        }
-
-        .stat-icon.warning {
-            background: linear-gradient(45deg, var(--warning-color), #ecc94b);
-        }
-
-        .stat-icon.danger {
-            background: linear-gradient(45deg, var(--danger-color), #f56565);
-        }
-
-        .stat-info h3 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-info p {
-            color: var(--text-light);
-            font-size: 0.875rem;
-        }
-
-        /* RECENT ACTIVITIES */
-        .recent-activities {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border-color);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--accent-color);
-            color: var(--primary-color);
-        }
-
-        .activity-content h4 {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .activity-content p {
-            color: var(--text-light);
-            font-size: 0.875rem;
-        }
-
-        .activity-time {
-            margin-left: auto;
-            color: var(--text-light);
-            font-size: 0.875rem;
-        }
-
-        /* CALENDAR WIDGET */
-        .calendar-widget {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border-color);
-            margin-top: 1.5rem;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .calendar-nav {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 6px;
-            color: var(--text-dark);
-        }
-
-        .calendar-nav:hover {
-            background-color: var(--accent-color);
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.5rem;
-            text-align: center;
-        }
-
-        .calendar-day {
-            padding: 0.75rem 0.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .calendar-day:hover {
-            background-color: var(--accent-color);
-        }
-
-        .calendar-day.today {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .calendar-day.has-event {
-            background-color: rgba(56, 161, 105, 0.1);
-            color: var(--success-color);
-        }
-
-        /* MODAL STYLES */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-        }
-
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-light);
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            outline: none;
-        }
-
-        .form-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: var(--sidebar-collapsed-width);
-            }
-            
-            .main-content {
-                margin-left: var(--sidebar-collapsed-width);
-            }
-            
-            .header {
-                padding: 1rem;
-            }
-            
-            .content {
-                padding: 1rem;
-            }
-            
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* CONTENT SECTIONS */
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .table-container {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border-color);
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table th,
-        .table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .table th {
-            background-color: var(--accent-color);
-            font-weight: 600;
-        }
-
-        .table tr:hover {
-            background-color: var(--accent-color);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .badge-success {
-            background-color: rgba(56, 161, 105, 0.1);
-            color: var(--success-color);
-        }
-
-        .badge-warning {
-            background-color: rgba(214, 158, 46, 0.1);
-            color: var(--warning-color);
-        }
-
-        .badge-danger {
-            background-color: rgba(229, 62, 62, 0.1);
-            color: var(--danger-color);
-        }
-    </style>
+    <script src="assets\js\movimiento.js" defer></script>
+    <link rel="stylesheet" href="assets\css\styles.css">
 </head>
-
 <body>
-    <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <img src="https://via.placeholder.com/40x40/2c5282/ffffff?text=SJO" alt="logo">
-                <span>San José Obrero</span>
-            </div>
-            <div class="menu-btn" id="menu-btn">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <button class="sidebar-toggle" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo">
+                <i class="fas fa-church"></i>
+                <span>Parroquia San José</span>
             </div>
         </div>
-        
-        <div class="search">
-            <i class="fas fa-search"></i>
-            <input type="search" placeholder="Buscar...">
+        <div class="header-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32" alt="Usuario">
+                <span>Padre Juan Carlos</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
         </div>
-        
-        <div class="menu-container">
-            <ul class="menu">
-                <li class="menu-item menu-item-static active" data-section="home">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-home"></i>
-                        <span>Inicio</span>
-                    </a>
-                </li>
-                <li class="menu-item menu-item-static" data-section="dashboard">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-chart-bar"></i>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="nav-item active">
+                    <a href="#dashboard" class="nav-link" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item menu-item-dropdown">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-church"></i>
+                <li class="nav-item">
+                    <a href="#personas" class="nav-link" data-section="personas">
+                        <i class="fas fa-users"></i>
+                        <span>Personas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#servicios" class="nav-link" data-section="servicios">
+                        <i class="fas fa-cross"></i>
                         <span>Servicios</span>
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
-                    </a>
-                    <ul class="sub-menu">
-                        <li><a href="#" class="sub-menu-link" data-section="misas">Misas</a></li>
-                        <li><a href="#" class="sub-menu-link" data-section="sacramentos">Sacramentos</a></li>
-                        <li><a href="#" class="sub-menu-link" data-section="documentos">Documentos</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item menu-item-static" data-section="tasks">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span>Tareas</span>
                     </a>
                 </li>
-                <li class="menu-item menu-item-dropdown">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-calendar"></i>
-                        <span>Agenda</span>
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                <li class="nav-item">
+                    <a href="#eventos" class="nav-link" data-section="eventos">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Eventos</span>
                     </a>
-                    <ul class="sub-menu">
-                        <li><a href="#" class="sub-menu-link" data-section="agenda-misas">Misas</a></li>
-                        <li><a href="#" class="sub-menu-link" data-section="agenda-sacramentos">Sacramentos</a></li>
-                        <li><a href="#" class="sub-menu-link" data-section="agenda-imprimir">Imprimir</a></li>
-                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#ventas" class="nav-link" data-section="ventas">
+                        <i class="fas fa-cash-register"></i>
+                        <span>Ventas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reportes" class="nav-link" data-section="reportes">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reportes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#configuracion" class="nav-link" data-section="configuracion">
+                        <i class="fas fa-cog"></i>
+                        <span>Configuración</span>
+                    </a>
                 </li>
             </ul>
-        </div>
-        
-        <div class="sidebar-footer">
-            <ul class="menu">
-                <li class="menu-item menu-item-static">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-bell"></i>
-                        <span>Notificaciones</span>
-                    </a>
-                </li>
-                <li class="menu-item menu-item-static">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Salir</span>
-                    </a>
-                </li>
-            </ul>    
-        </div>
-        
-        <div class="user">
-            <div class="user-avatar">JC</div>
-            <div class="user-data">                    
-                <span class="name">Joaquín Cupe</span>
-                <span class="rol">Secretario</span>
-            </div>
-        </div>
-    </div>
+        </nav>
+    </aside>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-content" id="main-content">
-        <!-- HEADER -->
-        <div class="header">
-            <h1 class="header-title">Sistema Administrativo</h1>
-            <div class="header-actions">
-                <button class="btn btn-primary" id="add-event-btn">
-                    <i class="fas fa-plus"></i>
-                    Nuevo Evento
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="section-header">
+                <h1>Dashboard</h1>
+                <div class="breadcrumb">
+                    <span>Inicio</span> > <span>Dashboard</span>
+                </div>
+            </div>
+
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>247</h3>
+                        <p>Feligreses Registrados</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>12</h3>
+                        <p>Eventos Hoy</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>S/ 2,450</h3>
+                        <p>Ingresos del Día</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-cross"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>8</h3>
+                        <p>Sacramentos Pendientes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-charts">
+                <div class="chart-container">
+                    <h3>Ingresos Mensuales</h3>
+                    <canvas id="ingresoChart" width="400" height="200"></canvas>
+                </div>
+                <div class="upcoming-events">
+                    <h3>Próximos Eventos</h3>
+                    <div class="event-list">
+                        <div class="event-item">
+                            <div class="event-time">09:00</div>
+                            <div class="event-details">
+                                <strong>Matrimonio - Juan y María</strong>
+                                <span>Altar Mayor</span>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-time">11:00</div>
+                            <div class="event-details">
+                                <strong>Bautismo Comunitario</strong>
+                                <span>5 niños</span>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-time">16:00</div>
+                            <div class="event-details">
+                                <strong>Misa de Difuntos</strong>
+                                <span>Familia González</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Personas Section -->
+        <section id="personas" class="content-section">
+            <div class="section-header">
+                <h1>Gestión de Personas</h1>
+                <button class="btn btn-primary" onclick="openModal('personaModal')">
+                    <i class="fas fa-plus"></i> Nueva Persona
                 </button>
             </div>
-        </div>
 
-        <!-- CONTENT -->
-        <div class="content">
-            <!-- HOME SECTION -->
-            <div class="content-section active" id="home">
-                <div class="dashboard-grid">
-                    <div class="card stat-card">
-                        <div class="stat-icon primary">
-                            <i class="fas fa-users"></i>
+            <div class="filters">
+                <input type="text" placeholder="Buscar por nombre, documento..." class="search-input">
+                <select class="filter-select">
+                    <option value="">Todos los tipos</option>
+                    <option value="empleado">Empleados</option>
+                    <option value="cliente">Clientes</option>
+                </select>
+                <select class="filter-select">
+                    <option value="">Todos los estados</option>
+                    <option value="1">Activos</option>
+                    <option value="0">Inactivos</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="personasTable">
+                        <tr>
+                            <td>12345678</td>
+                            <td>Juan Carlos</td>
+                            <td>Mendoza Santos</td>
+                            <td>padre.juan@parroquia.pe</td>
+                            <td>987654321</td>
+                            <td><span class="badge badge-info">Empleado</span></td>
+                            <td><span class="badge badge-success">Activo</span></td>
+                            <td class="actions">
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <button class="btn btn-secondary">Anterior</button>
+                <span>Página 1 de 10</span>
+                <button class="btn btn-secondary">Siguiente</button>
+            </div>
+        </section>
+
+        <!-- Servicios Section -->
+        <section id="servicios" class="content-section">
+            <div class="section-header">
+                <h1>Gestión de Servicios</h1>
+                <button class="btn btn-primary" onclick="openModal('servicioModal')">
+                    <i class="fas fa-plus"></i> Nuevo Servicio
+                </button>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-category">
+                    <h3>Sacramentos</h3>
+                    <div class="service-list">
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Matrimonio Particular</h4>
+                                <p>Ceremonia de matrimonio privada</p>
+                                <span class="price">S/ 500.00</span>
+                            </div>
+                            <div class="service-actions">
+                                <button class="btn-icon btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="stat-info">
-                            <h3>1,247</h3>
-                            <p>Feligreses Registrados</p>
-                        </div>
-                    </div>
-                    <div class="card stat-card">
-                        <div class="stat-icon success">
-                            <i class="fas fa-church"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>24</h3>
-                            <p>Misas este Mes</p>
-                        </div>
-                    </div>
-                    <div class="card stat-card">
-                        <div class="stat-icon warning">
-                            <i class="fas fa-certificate"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>18</h3>
-                            <p>Sacramentos Pendientes</p>
-                        </div>
-                    </div>
-                    <div class="card stat-card">
-                        <div class="stat-icon danger">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>7</h3>
-                            <p>Documentos por Procesar</p>
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Bautismo Particular</h4>
+                                <p>Bautismo individual</p>
+                                <span class="price">S/ 150.00</span>
+                            </div>
+                            <div class="service-actions">
+                                <button class="btn-icon btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="recent-activities">
-                    <div class="section-header">
-                        <h2 class="section-title">Actividades Recientes</h2>
-                        <button class="btn btn-primary">Ver Todas</button>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-baptism"></i>
+                <div class="service-category">
+                    <h3>Celebraciones</h3>
+                    <div class="service-list">
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Misa Particular con Coro</h4>
+                                <p>Misa privada con acompañamiento musical</p>
+                                <span class="price">S/ 200.00</span>
+                            </div>
+                            <div class="service-actions">
+                                <button class="btn-icon btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="activity-content">
-                            <h4>Bautismo programado</h4>
-                            <p>María González - Familia Rodríguez</p>
-                        </div>
-                        <div class="activity-time">Hace 2 horas</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-ring"></i>
-                        </div>
-                        <div class="activity-content">
-                            <h4>Matrimonio confirmado</h4>
-                            <p>Carlos y Ana - 15 de Julio</p>
-                        </div>
-                        <div class="activity-time">Hace 4 horas</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-file-pdf"></i>
-                        </div>
-                        <div class="activity-content">
-                            <h4>Certificado emitido</h4>
-                            <p>Certificado de Confirmación - Pedro Silva</p>
-                        </div>
-                        <div class="activity-time">Ayer</div>
                     </div>
                 </div>
 
-                <div class="calendar-widget">
-                    <div class="section-header">
-                        <h3 class="section-title">Calendario</h3>
-                        <div>
-                            <button class="calendar-nav" id="prev-month"><i class="fas fa-chevron-left"></i></button>
-                            <span id="current-month">Junio 2025</span>
-                            <button class="calendar-nav" id="next-month"><i class="fas fa-chevron-right"></i></button>
+                <div class="service-category">
+                    <h3>Documentos</h3>
+                    <div class="service-list">
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Constancia de Matrimonio</h4>
+                                <p>Certificado de matrimonio religioso</p>
+                                <span class="price">S/ 30.00</span>
+                            </div>
+                            <div class="service-actions">
+                                <button class="btn-icon btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="calendar-grid" id="calendar-grid">
-                        <!-- Calendar will be generated by JavaScript -->
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- DASHBOARD SECTION -->
-            <div class="content-section" id="dashboard">
-                <h2 style="margin-bottom: 2rem;">Panel de Control</h2>
-                <!-- Dashboard content here -->
-                <div class="card">
-                    <h3>Estadísticas Detalladas</h3>
-                    <p>Aquí puedes ver estadísticas más detalladas de la parroquia.</p>
-                </div>
+        <!-- Eventos Section -->
+        <section id="eventos" class="content-section">
+            <div class="section-header">
+                <h1>Gestión de Eventos</h1>
+                <button class="btn btn-primary" onclick="openModal('eventoModal')">
+                    <i class="fas fa-plus"></i> Nuevo Evento
+                </button>
             </div>
 
-            <!-- MISAS SECTION -->
-            <div class="content-section" id="misas">
-                <div class="section-header">
-                    <h2 class="section-title">Gestión de Misas</h2>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Nueva Misa
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="btn btn-secondary" id="prevMonth">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h3 id="currentMonth">Junio 2025</h3>
+                    <button class="btn btn-secondary" id="nextMonth">
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Hora</th>
-                                <th>Tipo</th>
-                                <th>Celebrante</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>25 Jun 2025</td>
-                                <td>07:00 AM</td>
-                                <td>Misa Diaria</td>
-                                <td>Padre José</td>
-                                <td><span class="badge badge-success">Programada</span></td>
-                                <td>
-                                    <button class="btn btn-sm">Editar</button>
-                                    <button class="btn btn-sm">Eliminar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>29 Jun 2025</td>
-                                <td>10:00 AM</td>
-                                <td>Misa Dominical</td>
-                                <td>Padre Miguel</td>
-                                <td><span class="badge badge-warning">Pendiente</span></td>
-                                <td>
-                                    <button class="btn btn-sm">Editar</button>
-                                    <button class="btn btn-sm">Eliminar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="calendar-grid" id="calendar">
+                    <!-- Calendar will be generated by JavaScript -->
                 </div>
             </div>
 
-            <!-- SACRAMENTOS SECTION -->
-            <div class="content-section" id="sacramentos">
-                <div class="section-header">
-                    <h2 class="section-title">Gestión de Sacramentos</h2>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Nuevo Sacramento
-                    </button>
-                </div>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Solicitante</th>
-                                <th>Fecha Solicitud</th>
-                                <th>Fecha Programada</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Bautismo</td>
-                                <td>María González</td>
-                                <td>20 Jun 2025</td>
-                                <td>30 Jun 2025</td>
-                                <td><span class="badge badge-success">Aprobado</span></td>
-                                <td>
-                                    <button class="btn btn-sm">Ver</button>
-                                    <button class="btn btn-sm">Editar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Matrimonio</td>
-                                <td>Carlos y Ana</td>
-                                <td>15 Jun 2025</td>
-                                <td>15 Jul 2025</td>
-                                <td><span class="badge badge-warning">En Proceso</span></td>
-                                <td>
-                                    <button class="btn btn-sm">Ver</button>
-                                    <button class="btn btn-sm">Editar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- TASKS SECTION -->
-            <div class="content-section" id="tasks">
-                <div class="section-header">
-                    <h2 class="section-title">Gestión de Tareas</h2>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Nueva Tarea
-                    </button>
-                </div>
-                <div class="dashboard-grid">
-                    <div class="card">
-                        <h3>Tareas Pendientes</h3>
-                        <div style="margin-top: 1rem;">
-                            <div class="activity-item" style="border-bottom: 1px solid var(--border-color); padding: 0.75rem 0;">
-                                <div class="activity-icon">
-                                    <i class="fas fa-tasks"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <h4>Revisar solicitudes de bautismo</h4>
-                                    <p>5 solicitudes pendientes de aprobación</p>
-                                </div>
-                                <div class="activity-time">
-                                    <span class="badge badge-warning">Alta</span>
-                                </div>
-                            </div>
-                            <div class="activity-item" style="border-bottom: 1px solid var(--border-color); padding: 0.75rem 0;">
-                                <div class="activity-icon">
-                                    <i class="fas fa-file-alt"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <h4>Preparar certificados</h4>
-                                    <p>12 certificados para entregar</p>
-                                </div>
-                                <div class="activity-time">
-                                    <span class="badge badge-success">Media</span>
-                                </div>
-                            </div>
-                            <div class="activity-item" style="padding: 0.75rem 0;">
-                                <div class="activity-icon">
-                                    <i class="fas fa-phone"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <h4>Contactar familias</h4>
-                                    <p>Confirmar asistencia a reunión</p>
-                                </div>
-                                <div class="activity-time">
-                                    <span class="badge badge-danger">Baja</span>
-                                </div>
-                            </div>
+            <div class="events-today">
+                <h3>Eventos de Hoy</h3>
+                <div class="event-list">
+                    <div class="event-card">
+                        <div class="event-time">09:00 AM</div>
+                        <div class="event-details">
+                            <h4>Matrimonio</h4>
+                            <p>Juan Pérez & María García</p>
+                            <span class="event-status confirmed">Confirmado</span>
                         </div>
-                    </div>
-                    <div class="card">
-                        <h3>Tareas Completadas</h3>
-                        <div style="margin-top: 1rem;">
-                            <div class="activity-item" style="border-bottom: 1px solid var(--border-color); padding: 0.75rem 0;">
-                                <div class="activity-icon">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <h4>Actualizar registro parroquial</h4>
-                                    <p>Completado el 24 Jun 2025</p>
-                                </div>
-                            </div>
-                            <div class="activity-item" style="padding: 0.75rem 0;">
-                                <div class="activity-icon">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <h4>Organizar archivo</h4>
-                                    <p>Completado el 23 Jun 2025</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DOCUMENTOS SECTION -->
-            <div class="content-section" id="documentos">
-                <div class="section-header">
-                    <h2 class="section-title">Gestión de Documentos</h2>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-upload"></i>
-                        Subir Documento
-                    </button>
-                </div>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nombre del Documento</th>
-                                <th>Tipo</th>
-                                <th>Fecha</th>
-                                <th>Tamaño</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Acta_Bautismo_001.pdf</td>
-                                <td>Acta de Bautismo</td>
-                                <td>25 Jun 2025</td>
-                                <td>245 KB</td>
-                                <td><span class="badge badge-success">Procesado</span></td>
-                                <td>
-                                    <button class="btn btn-sm"><i class="fas fa-download"></i></button>
-                                    <button class="btn btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Certificado_Matrimonio_045.pdf</td>
-                                <td>Certificado</td>
-                                <td>24 Jun 2025</td>
-                                <td>178 KB</td>
-                                <td><span class="badge badge-warning">Pendiente</span></td>
-                                <td>
-                                    <button class="btn btn-sm"><i class="fas fa-download"></i></button>
-                                    <button class="btn btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- AGENDA SECTIONS -->
-            <div class="content-section" id="agenda-misas">
-                <div class="section-header">
-                    <h2 class="section-title">Agenda de Misas</h2>
-                    <div>
-                        <button class="btn btn-primary">
-                            <i class="fas fa-calendar-plus"></i>
-                            Programar Misa
-                        </button>
-                        <button class="btn btn-primary" style="margin-left: 0.5rem;">
-                            <i class="fas fa-print"></i>
-                            Imprimir
-                        </button>
-                    </div>
-                </div>
-                <div class="calendar-widget">
-                    <div class="calendar-header">
-                        <h3>Junio 2025</h3>
-                        <div>
-                            <button class="calendar-nav"><i class="fas fa-chevron-left"></i></button>
-                            <button class="calendar-nav"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background-color: var(--border-color); border-radius: 8px; overflow: hidden;">
-                        <div style="background: white; padding: 1rem; text-align: center; font-weight: 600;">Dom</div>
-                        <div style="background: white; padding: 1rem; text-align: center; font-weight: 600;">Lun</div>
-                        <div style="background: white; padding: 1rem; text-align: center; font-weight: 600;">Mar</div>
-                        <div style="background: white; padding: 1rem; text-align: center; font-weight: 600;">Mié</div>
-                        <div style="background: white; padding: 1rem; text-align: center; font-weight: 600;">Jue</div>
-                        <div style="background: white; padding: 1rem; text-align: center; font-weight: 600;">Vie</div>
-                        <div style="background: white; padding: 1rem; text-align: center; font-weight: 600;">Sáb</div>
-                        
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">1</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">2</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">3</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">4</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">5</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">6</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">7</div>
-                        
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">
-                            8
-                            <div style="background: var(--success-color); color: white; font-size: 0.7rem; padding: 2px 4px; border-radius: 3px; margin-top: 4px;">Misa 10:00</div>
-                        </div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">9</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">10</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">11</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">12</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">13</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">14</div>
-                        
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">
-                            15
-                            <div style="background: var(--success-color); color: white; font-size: 0.7rem; padding: 2px 4px; border-radius: 3px; margin-top: 4px;">Misa 10:00</div>
-                        </div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">16</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">17</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">18</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">19</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">20</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">21</div>
-                        
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">
-                            22
-                            <div style="background: var(--success-color); color: white; font-size: 0.7rem; padding: 2px 4px; border-radius: 3px; margin-top: 4px;">Misa 10:00</div>
-                        </div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">23</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">24</div>
-                        <div style="background: var(--primary-color); color: white; padding: 1rem; text-align: center; min-height: 80px;">
-                            25
-                            <div style="background: rgba(255,255,255,0.2); color: white; font-size: 0.7rem; padding: 2px 4px; border-radius: 3px; margin-top: 4px;">Hoy</div>
-                        </div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">26</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">27</div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">28</div>
-                        
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">
-                            29
-                            <div style="background: var(--success-color); color: white; font-size: 0.7rem; padding: 2px 4px; border-radius: 3px; margin-top: 4px;">Misa 10:00</div>
-                        </div>
-                        <div style="background: white; padding: 1rem; text-align: center; min-height: 80px;">30</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="content-section" id="agenda-sacramentos">
-                <div class="section-header">
-                    <h2 class="section-title">Agenda de Sacramentos</h2>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-calendar-plus"></i>
-                        Programar Sacramento
-                    </button>
-                </div>
-                <div class="card">
-                    <h3>Próximos Sacramentos</h3>
-                    <div style="margin-top: 1rem;">
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-baby"></i>
-                            </div>
-                            <div class="activity-content">
-                                <h4>Bautismo - María González</h4>
-                                <p>30 de Junio, 2025 - 11:00 AM</p>
-                            </div>
-                            <div class="activity-time">
-                                <span class="badge badge-success">Confirmado</span>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                            <div class="activity-content">
-                                <h4>Matrimonio - Carlos y Ana</h4>
-                                <p>15 de Julio, 2025 - 4:00 PM</p>
-                            </div>
-                            <div class="activity-time">
-                                <span class="badge badge-warning">Preparación</span>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-hands-praying"></i>
-                            </div>
-                            <div class="activity-content">
-                                <h4>Primera Comunión - Grupo A</h4>
-                                <p>22 de Julio, 2025 - 10:00 AM</p>
-                            </div>
-                            <div class="activity-time">
-                                <span class="badge badge-success">Confirmado</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="content-section" id="agenda-imprimir">
-                <div class="section-header">
-                    <h2 class="section-title">Imprimir Agenda</h2>
-                </div>
-                <div class="card">
-                    <h3>Opciones de Impresión</h3>
-                    <div style="margin-top: 1.5rem;">
-                        <div class="form-group">
-                            <label class="form-label">Tipo de Agenda</label>
-                            <select class="form-input">
-                                <option>Agenda Semanal</option>
-                                <option>Agenda Mensual</option>
-                                <option>Agenda de Misas</option>
-                                <option>Agenda de Sacramentos</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Rango de Fechas</label>
-                            <div style="display: flex; gap: 1rem;">
-                                <input type="date" class="form-input" value="2025-06-25">
-                                <input type="date" class="form-input" value="2025-07-25">
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                            <button class="btn btn-primary">
-                                <i class="fas fa-print"></i>
-                                Imprimir
-                            </button>
-                            <button class="btn" style="background-color: var(--accent-color); color: var(--text-dark);">
-                                <i class="fas fa-file-pdf"></i>
-                                Generar PDF
+                        <div class="event-actions">
+                            <button class="btn-icon btn-edit">
+                                <i class="fas fa-edit"></i>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- MODAL NUEVO EVENTO -->
-    <div class="modal" id="event-modal">
+        <!-- Ventas Section -->
+        <section id="ventas" class="content-section">
+            <div class="section-header">
+                <h1>Punto de Venta</h1>
+                <button class="btn btn-primary" onclick="openModal('ventaModal')">
+                    <i class="fas fa-plus"></i> Nueva Venta
+                </button>
+            </div>
+
+            <div class="sales-container">
+                <div class="sales-panel">
+                    <h3>Crear Venta</h3>
+                    <div class="client-search">
+                        <input type="text" placeholder="Buscar cliente..." class="search-input">
+                        <button class="btn btn-secondary">Buscar</button>
+                    </div>
+
+                    <div class="services-selection">
+                        <h4>Servicios Disponibles</h4>
+                        <div class="service-buttons">
+                            <button class="service-btn" data-id="1" data-price="500">
+                                Matrimonio Particular - S/ 500.00
+                            </button>
+                            <button class="service-btn" data-id="2" data-price="150">
+                                Bautismo - S/ 150.00
+                            </button>
+                            <button class="service-btn" data-id="3" data-price="30">
+                                Constancia - S/ 30.00
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="cart">
+                        <h4>Carrito de Compras</h4>
+                        <div class="cart-items" id="cartItems">
+                            <!-- Cart items will be added here -->
+                        </div>
+                        <div class="cart-total">
+                            <strong>Total: S/ <span id="cartTotal">0.00</span></strong>
+                        </div>
+                        <button class="btn btn-success btn-full" onclick="processSale()">
+                            Procesar Venta
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sales-history">
+                    <h3>Ventas del Día</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>N° Venta</th>
+                                    <th>Cliente</th>
+                                    <th>Total</th>
+                                    <th>Método Pago</th>
+                                    <th>Hora</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesTable">
+                                <tr>
+                                    <td>VEN000001</td>
+                                    <td>Pedro López</td>
+                                    <td>S/ 150.00</td>
+                                    <td>Efectivo</td>
+                                    <td>10:30 AM</td>
+                                    <td>
+                                        <button class="btn-icon btn-print" title="Imprimir">
+                                            <i class="fas fa-print"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reportes Section -->
+        <section id="reportes" class="content-section">
+            <div class="section-header">
+                <h1>Reportes</h1>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Ingresos por Período</h3>
+                    <p>Reporte de ingresos por fechas</p>
+                    <button class="btn btn-primary">Generar</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Registro de Feligreses</h3>
+                    <p>Lista de personas registradas</p>
+                    <button class="btn btn-primary">Generar</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <h3>Eventos Programados</h3>
+                    <p>Agenda de eventos futuros</p>
+                    <button class="btn btn-primary">Generar</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-cross"></i>
+                    </div>
+                    <h3>Sacramentos Realizados</h3>
+                    <p>Historial de sacramentos</p>
+                    <button class="btn btn-primary">Generar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Configuración Section -->
+        <section id="configuracion" class="content-section">
+            <div class="section-header">
+                <h1>Configuración</h1>
+            </div>
+
+            <div class="config-tabs">
+                <button class="tab-btn active" data-tab="parroquia">Parroquia</button>
+                <button class="tab-btn" data-tab="usuarios">Usuarios</button>
+                <button class="tab-btn" data-tab="sistema">Sistema</button>
+            </div>
+
+            <div class="tab-content active" id="parroquia">
+                <div class="config-form">
+                    <h3>Información de la Parroquia</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre de la Parroquia</label>
+                            <input type="text" value="Parroquia San José">
+                        </div>
+                        <div class="form-group">
+                            <label>Párroco</label>
+                            <input type="text" value="Padre Juan Carlos Mendoza">
+                        </div>
+                        <div class="form-group">
+                            <label>Dirección</label>
+                            <input type="text" value="Av. Principal 123, Lima">
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="text" value="01-4567890">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" value="info@parroquiasanjose.pe">
+                        </div>
+                        <div class="form-group">
+                            <label>RUC</label>
+                            <input type="text" value="20123456789">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </div>
+
+            <div class="tab-content" id="usuarios">
+                <h3>Gestión de Usuarios</h3>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Empleado</th>
+                                <th>Rol</th>
+                                <th>Último Acceso</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>padre.juan</td>
+                                <td>Juan Carlos Mendoza</td>
+                                <td>Párroco</td>
+                                <td>Hoy 08:30 AM</td>
+                                <td><span class="badge badge-success">Activo</span></td>
+                                <td>
+                                    <button class="btn-icon btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="sistema">
+                <h3>Configuración del Sistema</h3>
+                <div class="config-options">
+                    <div class="config-option">
+                        <label>Backup automático</label>
+                        <input type="checkbox" checked>
+                    </div>
+                    <div class="config-option">
+                        <label>Notificaciones por email</label>
+                        <input type="checkbox" checked>
+                    </div>
+                    <div class="config-option">
+                        <label>Modo de desarrollo</label>
+                        <input type="checkbox">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    
+    <!-- Modal Persona -->
+    <div id="personaModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Nuevo Evento</h2>
-                <button class="close-btn" id="close-modal">&times;</button>
+                <h2>Nueva Persona</h2>
+                <span class="close" onclick="closeModal('personaModal')">&times;</span>
             </div>
-            <form>
-                <div class="form-group">
-                    <label class="form-label">Tipo de Evento</label>
-                    <select class="form-input">
-                        <option>Misa</option>
-                        <option>Bautismo</option>
-                        <option>Matrimonio</option>
-                        <option>Confirmación</option>
-                        <option>Primera Comunión</option>
-                        <option>Reunión</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Título</label>
-                    <input type="text" class="form-input" placeholder="Título del evento">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-input">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Hora</label>
-                    <input type="time" class="form-input">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Descripción</label>
-                    <textarea class="form-input" rows="3" placeholder="Descripción del evento"></textarea>
-                </div>
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary">Guardar Evento</button>
-                    <button type="button" class="btn" style="background-color: var(--accent-color); color: var(--text-dark);" id="cancel-modal">Cancelar</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <form class="form-grid">
+                    <div class="form-group">
+                        <label>Tipo de Documento</label>
+                        <select>
+                            <option value="DNI">DNI</option>
+                            <option value="CE">Carnet de Extranjería</option>
+                            <option value="PASAPORTE">Pasaporte</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>N° Documento</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombres</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido Paterno</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido Materno</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Nacimiento</label>
+                        <input type="date">
+                    </div>
+                    <div class="form-group">
+                        <label>Sexo</label>
+                        <select>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo</label>
+                        <input type="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Celular</label>
+                        <input type="tel" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="tel">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Dirección</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Distrito</label>
+                        <input type="text">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('personaModal')">Cancelar</button>
+                <button class="btn btn-primary">Guardar</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Variables globales
-        let sidebarCollapsed = false;
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-        const menuBtn = document.getElementById('menu-btn');
+    <!-- Modal Servicio -->
+    <div id="servicioModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nuevo Servicio</h2>
+                <span class="close" onclick="closeModal('servicioModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form class="form-grid">
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select required>
+                            <option value="">Seleccionar...</option>
+                            <option value="1">Sacramentos</option>
+                            <option value="2">Celebraciones</option>
+                            <option value="3">Documentos</option>
+                            <option value="4">Servicios Especiales</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Código</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Nombre del Servicio</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Descripción</label>
+                        <textarea rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio (S/)</label>
+                        <input type="number" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Duración (minutos)</label>
+                        <input type="number">
+                    </div>
+                    <div class="form-group">
+                        <label>Requiere Cita</label>
+                        <input type="checkbox">
+                    </div>
+                    <div class="form-group">
+                        <label>Máximo por Día</label>
+                        <input type="number">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('servicioModal')">Cancelar</button>
+                <button class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
 
-        // Toggle sidebar
-        menuBtn.addEventListener('click', function() {
-            sidebarCollapsed = !sidebarCollapsed;
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('sidebar-collapsed');
-            
-            const icon = menuBtn.querySelector('i');
-            icon.className = sidebarCollapsed ? 'fas fa-bars' : 'fas fa-times';
-        });
+    <!-- Modal Evento -->
+    <div id="eventoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nuevo Evento</h2>
+                <span class="close" onclick="closeModal('eventoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form class="form-grid">
+                    <div class="form-group">
+                        <label>Tipo de Evento</label>
+                        <select required>
+                            <option value="">Seleccionar...</option>
+                            <option value="MISA">Misa</option>
+                            <option value="BAUTISMO">Bautismo</option>
+                            <option value="MATRIMONIO">Matrimonio</option>
+                            <option value="DOCUMENTO">Documento</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Servicio</label>
+                        <select required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <input type="text" placeholder="Buscar cliente..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora</label>
+                        <input type="time" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Observaciones</label>
+                        <textarea rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('eventoModal')">Cancelar</button>
+                <button class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
 
-        // Navegación del menú
-        const menuItems = document.querySelectorAll('.menu-item[data-section], .sub-menu-link[data-section]');
-        const contentSections = document.querySelectorAll('.content-section');
+    <!-- Modal Venta -->
+    <div id="ventaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Procesar Venta</h2>
+                <span class="close" onclick="closeModal('ventaModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form class="form-grid">
+                    <div class="form-group">
+                        <label>Método de Pago</label>
+                        <select required>
+                            <option value="">Seleccionar...</option>
+                            <option value="EFE">Efectivo</option>
+                            <option value="YAP">Yape</option>
+                            <option value="TRAN">Transferencia</option>
+                            <option value="PLIN">Plin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Total a Pagar</label>
+                        <input type="number" readonly id="totalPagar">
+                    </div>
+                    <div class="form-group">
+                        <label>Monto Recibido</label>
+                        <input type="number" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Vuelto</label>
+                        <input type="number" readonly>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Referencia de Pago</label>
+                        <input type="text" placeholder="N° operación, etc.">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('ventaModal')">Cancelar</button>
+                <button class="btn btn-success">Procesar Venta</button>
+            </div>
+        </div>
+    </div>
 
-        menuItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const sectionId = this.getAttribute('data-section');
-                
-                // Remover clase active de todos los items
-                document.querySelectorAll('.menu-item').forEach(mi => mi.classList.remove('active'));
-                
-                // Agregar clase active al item clickeado
-                if (this.classList.contains('menu-item')) {
-                    this.classList.add('active');
-                } else {
-                    this.closest('.menu-item').classList.add('active');
-                }
-                
-                // Mostrar sección correspondiente
-                contentSections.forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                const targetSection = document.getElementById(sectionId);
-                if (targetSection) {
-                    targetSection.classList.add('active');
-                }
-            });
-        });
-
-        // Dropdown menus
-        const dropdownItems = document.querySelectorAll('.menu-item-dropdown');
-        dropdownItems.forEach(item => {
-            const link = item.querySelector('.menu-link');
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                item.classList.toggle('open');
-            });
-        });
-
-        // Modal functionality
-        const modal = document.getElementById('event-modal');
-        const addEventBtn = document.getElementById('add-event-btn');
-        const closeModalBtn = document.getElementById('close-modal');
-        const cancelModalBtn = document.getElementById('cancel-modal');
-
-        addEventBtn.addEventListener('click', function() {
-            modal.style.display = 'block';
-        });
-
-        closeModalBtn.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-
-        cancelModalBtn.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-
-        // Cerrar modal al hacer click fuera de él
-        window.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        // Calendario simple
-        function generateCalendar() {
-            const calendarGrid = document.getElementById('calendar-grid');
-            if (!calendarGrid) return;
-
-            const today = new Date();
-            const currentMonth = today.getMonth();
-            const currentYear = today.getFullYear();
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-
-            let calendarHTML = '';
-            
-            // Días de la semana
-            const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-            dayNames.forEach(day => {
-                calendarHTML += `<div style="font-weight: 600; padding: 0.5rem; text-align: center; background: var(--accent-color);">${day}</div>`;
-            });
-
-            // Espacios en blanco para el primer día
-            for (let i = 0; i < firstDay; i++) {
-                calendarHTML += '<div class="calendar-day" style="background: var(--accent-color);"></div>';
-            }
-
-            // Días del mes
-            for (let day = 1; day <= daysInMonth; day++) {
-                const isToday = day === today.getDate();
-                const hasEvent = [8, 15, 22, 29].includes(day); // Días con eventos de ejemplo
-                
-                let classes = 'calendar-day';
-                if (isToday) classes += ' today';
-                if (hasEvent) classes += ' has-event';
-                
-                calendarHTML += `<div class="${classes}">${day}</div>`;
-            }
-
-            calendarGrid.innerHTML = calendarHTML;
-        }
-
-        // Inicializar calendario cuando se carga la página
-        document.addEventListener('DOMContentLoaded', function() {
-            generateCalendar();
-        });
-
-        // Responsive behavior
-        function handleResize() {
-            if (window.innerWidth <= 768) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('sidebar-collapsed');
-                sidebarCollapsed = true;
-            } else if (window.innerWidth > 768 && sidebarCollapsed) {
-                sidebar.classList.remove('collapsed');
-                mainContent.classList.remove('sidebar-collapsed');
-                sidebarCollapsed = false;
-            }
-        }
-
-        window.addEventListener('resize', handleResize);
-        handleResize(); // Ejecutar al cargar
-
-        // Simulación de notificaciones
-        function showNotification(message, type = 'info') {
-            // Aquí puedes implementar un sistema de notificaciones
-            console.log(`Notificación ${type}: ${message}`);
-        }
-
-        // Ejemplo de funcionalidad para botones
-        document.addEventListener('click', function(e) {
-            if (e.target.textContent === 'Ver Todas') {
-                showNotification('Mostrando todas las actividades');
-            }
-            
-            if (e.target.textContent === 'Nueva Misa') {
-                showNotification('Abriendo formulario de nueva misa');
-            }
-            
-            if (e.target.textContent === 'Nuevo Sacramento') {
-                showNotification('Abriendo formulario de nuevo sacramento');
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
