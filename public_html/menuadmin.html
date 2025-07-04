@@ -3,818 +3,582 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión Parroquial San José</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="assets\js\movimiento.js" defer></script>
-    <link rel="stylesheet" href="assets\css\styles.css">
+    <title>Sistema de Gestión Parroquial</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="assets/js/movimiento.js" defer></script>
+
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-left">
-            <button class="sidebar-toggle" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="logo">
-                <i class="fas fa-church"></i>
-                <span>Parroquia San José</span>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-card">
+                <h1><i class="fas fa-church"></i> Sistema Parroquial</h1>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Usuario</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </form>
             </div>
         </div>
-        <div class="header-right">
-            <div class="notification-bell">
-                <i class="fas fa-bell"></i>
-                <span class="notification-count">3</span>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboardPage" class="page">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-church"></i> San Jose Obrero</h3>
             </div>
-            <div class="user-profile">
-                <img src="assets\imgs\avatar.jpg" alt="Usuario">
-                <span>Padre Juan Carlos</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-section="clientes">
+                    <i class="fas fa-users"></i> Clientes
+                </a>
+                <a href="#" class="nav-item" data-section="servicios">
+                    <i class="fas fa-praying-hands"></i> Servicios
+                </a>
+                <a href="#" class="nav-item" data-section="agendados">
+                    <i class="fas fa-calendar-alt"></i> Agendados
+                </a>
+                <a href="#" class="nav-item" data-section="ventas">
+                    <i class="fas fa-cash-register"></i> Ventas
+                </a>
+                <a href="#" class="nav-item" data-section="empleados">
+                    <i class="fas fa-user-tie"></i> Empleados
+                </a>
+                <a href="#" class="nav-item" data-section="reportes">
+                    <i class="fas fa-chart-bar"></i> Reportes
+                </a>
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
+            </nav>
         </div>
-    </header>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <nav class="sidebar-nav">
-            <ul>
-                <li class="nav-item active">
-                    <a href="#dashboard" class="nav-link" data-section="dashboard">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#personas" class="nav-link" data-section="personas">
-                        <i class="fas fa-users"></i>
-                        <span>Personas</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#servicios" class="nav-link" data-section="servicios">
-                        <i class="fas fa-cross"></i>
-                        <span>Servicios</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#eventos" class="nav-link" data-section="eventos">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Eventos</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#ventas" class="nav-link" data-section="ventas">
-                        <i class="fas fa-cash-register"></i>
-                        <span>Ventas</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#reportes" class="nav-link" data-section="reportes">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Reportes</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#configuracion" class="nav-link" data-section="configuracion">
-                        <i class="fas fa-cog"></i>
-                        <span>Configuración</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </aside>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <h2 id="sectionTitle">Dashboard</h2>
+                <div class="user-info">
+                    <span id="userDisplay">Usuario</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Dashboard Section -->
-        <section id="dashboard" class="content-section active">
-            <div class="section-header">
-                <h1>Dashboard</h1>
-                <div class="breadcrumb">
-                    <span>Inicio</span> > <span>Dashboard</span>
-                </div>
-            </div>
-
-            <div class="dashboard-cards">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>247</h3>
-                        <p>Feligreses Registrados</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>12</h3>
-                        <p>Eventos Hoy</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>S/ 2,450</h3>
-                        <p>Ingresos del Día</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-cross"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>8</h3>
-                        <p>Sacramentos Pendientes</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dashboard-charts">
-                <div class="chart-container">
-                    <h3>Ingresos Mensuales</h3>
-                    <canvas id="ingresoChart" width="400" height="200"></canvas>
-                </div>
-                <div class="upcoming-events">
-                    <h3>Próximos Eventos</h3>
-                    <div class="event-list">
-                        <div class="event-item">
-                            <div class="event-time">09:00</div>
-                            <div class="event-details">
-                                <strong>Matrimonio - Juan y María</strong>
-                                <span>Altar Mayor</span>
-                            </div>
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="content-section active">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-calendar-check"></i>
                         </div>
-                        <div class="event-item">
-                            <div class="event-time">11:00</div>
-                            <div class="event-details">
-                                <strong>Bautismo Comunitario</strong>
-                                <span>5 niños</span>
-                            </div>
-                        </div>
-                        <div class="event-item">
-                            <div class="event-time">16:00</div>
-                            <div class="event-details">
-                                <strong>Misa de Difuntos</strong>
-                                <span>Familia González</span>
-                            </div>
+                        <div class="card-info">
+                            <h3 id="citasHoy">0</h3>
+                            <p>Citas Hoy</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Personas Section -->
-        <section id="personas" class="content-section">
-            <div class="section-header">
-                <h1>Gestión de Personas</h1>
-                <button class="btn btn-primary" onclick="openModal('personaModal')">
-                    <i class="fas fa-plus"></i> Nueva Persona
-                </button>
-            </div>
-
-            <div class="filters">
-                <input type="text" placeholder="Buscar por nombre, documento..." class="search-input">
-                <select class="filter-select">
-                    <option value="">Todos los tipos</option>
-                    <option value="empleado">Empleados</option>
-                    <option value="cliente">Clientes</option>
-                </select>
-                <select class="filter-select">
-                    <option value="">Todos los estados</option>
-                    <option value="1">Activos</option>
-                    <option value="0">Inactivos</option>
-                </select>
-            </div>
-
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Documento</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Correo</th>
-                            <th>Teléfono</th>
-                            <th>Tipo</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="personasTable">
-                        <tr>
-                            <td>12345678</td>
-                            <td>Juan Carlos</td>
-                            <td>Mendoza Santos</td>
-                            <td>padre.juan@parroquia.pe</td>
-                            <td>987654321</td>
-                            <td><span class="badge badge-info">Empleado</span></td>
-                            <td><span class="badge badge-success">Activo</span></td>
-                            <td class="actions">
-                                <button class="btn-icon btn-edit" title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon btn-delete" title="Eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="pagination">
-                <button class="btn btn-secondary">Anterior</button>
-                <span>Página 1 de 10</span>
-                <button class="btn btn-secondary">Siguiente</button>
-            </div>
-        </section>
-
-        <!-- Servicios Section -->
-        <section id="servicios" class="content-section">
-            <div class="section-header">
-                <h1>Gestión de Servicios</h1>
-                <button class="btn btn-primary" onclick="openModal('servicioModal')">
-                    <i class="fas fa-plus"></i> Nuevo Servicio
-                </button>
-            </div>
-
-            <div class="services-grid">
-                <div class="service-category">
-                    <h3>Sacramentos</h3>
-                    <div class="service-list">
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4>Matrimonio Particular</h4>
-                                <p>Ceremonia de matrimonio privada</p>
-                                <span class="price">S/ 500.00</span>
-                            </div>
-                            <div class="service-actions">
-                                <button class="btn-icon btn-edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon btn-delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-dollar-sign"></i>
                         </div>
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4>Bautismo Particular</h4>
-                                <p>Bautismo individual</p>
-                                <span class="price">S/ 150.00</span>
-                            </div>
-                            <div class="service-actions">
-                                <button class="btn-icon btn-edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon btn-delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
+                        <div class="card-info">
+                            <h3 id="ventasHoy">S/. 0.00</h3>
+                            <p>Ventas Hoy</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon bg-warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3 id="pendientes">0</h3>
+                            <p>Pendientes</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon bg-info">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3 id="clientesNuevos">0</h3>
+                            <p>Clientes Nuevos</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="service-category">
-                    <h3>Celebraciones</h3>
-                    <div class="service-list">
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4>Misa Particular con Coro</h4>
-                                <p>Misa privada con acompañamiento musical</p>
-                                <span class="price">S/ 200.00</span>
-                            </div>
-                            <div class="service-actions">
-                                <button class="btn-icon btn-edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon btn-delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-category">
-                    <h3>Documentos</h3>
-                    <div class="service-list">
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4>Constancia de Matrimonio</h4>
-                                <p>Certificado de matrimonio religioso</p>
-                                <span class="price">S/ 30.00</span>
-                            </div>
-                            <div class="service-actions">
-                                <button class="btn-icon btn-edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon btn-delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Eventos Section -->
-        <section id="eventos" class="content-section">
-            <div class="section-header">
-                <h1>Gestión de Eventos</h1>
-                <button class="btn btn-primary" onclick="openModal('eventoModal')">
-                    <i class="fas fa-plus"></i> Nuevo Evento
-                </button>
-            </div>
-
-            <div class="calendar-container">
-                <div class="calendar-header">
-                    <button class="btn btn-secondary" id="prevMonth">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <h3 id="currentMonth">Junio 2025</h3>
-                    <button class="btn btn-secondary" id="nextMonth">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                <div class="calendar-grid" id="calendar">
-                    <!-- Calendar will be generated by JavaScript -->
-                </div>
-            </div>
-
-            <div class="events-today">
-                <h3>Eventos de Hoy</h3>
-                <div class="event-list">
-                    <div class="event-card">
-                        <div class="event-time">09:00 AM</div>
-                        <div class="event-details">
-                            <h4>Matrimonio</h4>
-                            <p>Juan Pérez & María García</p>
-                            <span class="event-status confirmed">Confirmado</span>
-                        </div>
-                        <div class="event-actions">
-                            <button class="btn-icon btn-edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Ventas Section -->
-        <section id="ventas" class="content-section">
-            <div class="section-header">
-                <h1>Punto de Venta</h1>
-                <button class="btn btn-primary" onclick="openModal('ventaModal')">
-                    <i class="fas fa-plus"></i> Nueva Venta
-                </button>
-            </div>
-
-            <div class="sales-container">
-                <div class="sales-panel">
-                    <h3>Crear Venta</h3>
-                    <div class="client-search">
-                        <input type="text" placeholder="Buscar cliente..." class="search-input">
-                        <button class="btn btn-secondary">Buscar</button>
-                    </div>
-
-                    <div class="services-selection">
-                        <h4>Servicios Disponibles</h4>
-                        <div class="service-buttons">
-                            <button class="service-btn" data-id="1" data-price="500">
-                                Matrimonio Particular - S/ 500.00
-                            </button>
-                            <button class="service-btn" data-id="2" data-price="150">
-                                Bautismo - S/ 150.00
-                            </button>
-                            <button class="service-btn" data-id="3" data-price="30">
-                                Constancia - S/ 30.00
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="cart">
-                        <h4>Carrito de Compras</h4>
-                        <div class="cart-items" id="cartItems">
-                            <!-- Cart items will be added here -->
-                        </div>
-                        <div class="cart-total">
-                            <strong>Total: S/ <span id="cartTotal">0.00</span></strong>
-                        </div>
-                        <button class="btn btn-success btn-full" onclick="processSale()">
-                            Procesar Venta
-                        </button>
-                    </div>
-                </div>
-
-                <div class="sales-history">
-                    <h3>Ventas del Día</h3>
-                    <div class="table-container">
-                        <table class="data-table">
+                <!-- Próximas Citas -->
+                <div class="mt-4">
+                    <h3>Próximas Citas</h3>
+                    <div class="table-responsive">
+                        <table class="table">
                             <thead>
                                 <tr>
-                                    <th>N° Venta</th>
-                                    <th>Cliente</th>
-                                    <th>Total</th>
-                                    <th>Método Pago</th>
                                     <th>Hora</th>
+                                    <th>Cliente</th>
+                                    <th>Servicio</th>
+                                    <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="salesTable">
-                                <tr>
-                                    <td>VEN000001</td>
-                                    <td>Pedro López</td>
-                                    <td>S/ 150.00</td>
-                                    <td>Efectivo</td>
-                                    <td>10:30 AM</td>
-                                    <td>
-                                        <button class="btn-icon btn-print" title="Imprimir">
-                                            <i class="fas fa-print"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="proximasCitasTable">
+                                <!-- Citas se cargarán aquí -->
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Reportes Section -->
-        <section id="reportes" class="content-section">
-            <div class="section-header">
-                <h1>Reportes</h1>
-            </div>
-
-            <div class="reports-grid">
-                <div class="report-card">
-                    <div class="report-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Ingresos por Período</h3>
-                    <p>Reporte de ingresos por fechas</p>
-                    <button class="btn btn-primary">Generar</button>
+            <!-- Clientes Section -->
+            <section id="clientesSection" class="content-section">
+                <div class="section-header">
+                    <button class="btn btn-primary" onclick="showModal('clienteModal')">
+                        <i class="fas fa-plus"></i> Nuevo Cliente
+                    </button>
                 </div>
-
-                <div class="report-card">
-                    <div class="report-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Registro de Feligreses</h3>
-                    <p>Lista de personas registradas</p>
-                    <button class="btn btn-primary">Generar</button>
-                </div>
-
-                <div class="report-card">
-                    <div class="report-icon">
-                        <i class="fas fa-calendar"></i>
-                    </div>
-                    <h3>Eventos Programados</h3>
-                    <p>Agenda de eventos futuros</p>
-                    <button class="btn btn-primary">Generar</button>
-                </div>
-
-                <div class="report-card">
-                    <div class="report-icon">
-                        <i class="fas fa-cross"></i>
-                    </div>
-                    <h3>Sacramentos Realizados</h3>
-                    <p>Historial de sacramentos</p>
-                    <button class="btn btn-primary">Generar</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Configuración Section -->
-        <section id="configuracion" class="content-section">
-            <div class="section-header">
-                <h1>Configuración</h1>
-            </div>
-
-            <div class="config-tabs">
-                <button class="tab-btn active" data-tab="parroquia">Parroquia</button>
-                <button class="tab-btn" data-tab="usuarios">Usuarios</button>
-                <button class="tab-btn" data-tab="sistema">Sistema</button>
-            </div>
-
-            <div class="tab-content active" id="parroquia">
-                <div class="config-form">
-                    <h3>Información de la Parroquia</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Nombre de la Parroquia</label>
-                            <input type="text" value="Parroquia San José">
-                        </div>
-                        <div class="form-group">
-                            <label>Párroco</label>
-                            <input type="text" value="Padre Juan Carlos Mendoza">
-                        </div>
-                        <div class="form-group">
-                            <label>Dirección</label>
-                            <input type="text" value="Av. Principal 123, Lima">
-                        </div>
-                        <div class="form-group">
-                            <label>Teléfono</label>
-                            <input type="text" value="01-4567890">
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" value="info@parroquiasanjose.pe">
-                        </div>
-                        <div class="form-group">
-                            <label>RUC</label>
-                            <input type="text" value="20123456789">
-                        </div>
-                    </div>
-                    <button class="btn btn-primary">Guardar Cambios</button>
-                </div>
-            </div>
-
-            <div class="tab-content" id="usuarios">
-                <h3>Gestión de Usuarios</h3>
-                <div class="table-container">
-                    <table class="data-table">
+                <div class="table-responsive">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th>Usuario</th>
-                                <th>Empleado</th>
-                                <th>Rol</th>
-                                <th>Último Acceso</th>
+                                <th>Código</th>
+                                <th>Nombres</th>
+                                <th>Documento</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientesTable">
+                            <!-- Clientes se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Servicios Section -->
+            <section id="serviciosSection" class="content-section">
+                <div class="section-header">
+                    <button class="btn btn-primary" onclick="showModal('servicioModal')">
+                        <i class="fas fa-plus"></i> Nuevo Servicio
+                    </button>
+                </div>
+                <div class="services-grid" id="servicesContainer">
+                    <!-- Servicios se cargarán aquí -->
+                </div>
+            </section>
+
+            <!-- Agendados Section -->
+            <section id="agendadosSection" class="content-section">
+                <div class="section-header">
+                    <button class="btn btn-primary" onclick="showModal('agendarModal')">
+                        <i class="fas fa-plus"></i> Agendar Servicio
+                    </button>
+                    <input type="date" id="filtroFecha" class="form-control" style="width: 200px;">
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Fecha/Hora</th>
+                                <th>Cliente</th>
+                                <th>Servicio</th>
+                                <th>Observaciones</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>padre.juan</td>
-                                <td>Juan Carlos Mendoza</td>
-                                <td>Párroco</td>
-                                <td>Hoy 08:30 AM</td>
-                                <td><span class="badge badge-success">Activo</span></td>
-                                <td>
-                                    <button class="btn-icon btn-edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                        <tbody id="agendadosTable">
+                            <!-- Agendados se cargarán aquí -->
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </section>
 
-            <div class="tab-content" id="sistema">
-                <h3>Configuración del Sistema</h3>
-                <div class="config-options">
-                    <div class="config-option">
-                        <label>Backup automático</label>
-                        <input type="checkbox" checked>
+            <!-- Ventas Section -->
+            <section id="ventasSection" class="content-section">
+                <div class="ventas-container">
+                    <div class="venta-form">
+                        <h3>Nueva Venta</h3>
+                        <form id="ventaForm">
+                            <div class="form-group">
+                                <label>Cliente</label>
+                                <select id="ventaCliente" class="form-control" required>
+                                    <option value="">Seleccione cliente</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Servicios Pendientes</label>
+                                <div id="serviciosPendientes">
+                                    <!-- Se cargarán los servicios pendientes del cliente -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Método de Pago</label>
+                                <select id="metodoPago" class="form-control" required>
+                                    <option value="">Seleccione método</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Total a Pagar</label>
+                                <input type="text" id="totalPagar" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Monto Recibido</label>
+                                <input type="number" id="montoRecibido" class="form-control" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Vuelto</label>
+                                <input type="text" id="vuelto" class="form-control" readonly>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block">
+                                <i class="fas fa-cash-register"></i> Procesar Venta
+                            </button>
+                        </form>
                     </div>
-                    <div class="config-option">
-                        <label>Notificaciones por email</label>
-                        <input type="checkbox" checked>
-                    </div>
-                    <div class="config-option">
-                        <label>Modo de desarrollo</label>
-                        <input type="checkbox">
+                    <div class="ventas-historial">
+                        <h3>Ventas del Día</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Hora</th>
+                                        <th>Cliente</th>
+                                        <th>Total</th>
+                                        <th>Método</th>
+                                        <th>Comprobante</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ventasHoyTable">
+                                    <!-- Ventas se cargarán aquí -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
+            </section>
+
+            <!-- Empleados Section -->
+            <section id="empleadosSection" class="content-section">
+                <div class="section-header">
+                    <button class="btn btn-primary" onclick="showModal('empleadoModal')">
+                        <i class="fas fa-plus"></i> Nuevo Empleado
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombres</th>
+                                <th>Rol</th>
+                                <th>Turno</th>
+                                <th>Salario</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="empleadosTable">
+                            <!-- Empleados se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Reportes Section -->
+            <section id="reportesSection" class="content-section">
+                <div class="reportes-grid">
+                    <div class="reporte-card">
+                        <h3>Reporte de Ventas</h3>
+                        <form id="reporteVentasForm">
+                            <div class="form-group">
+                                <label>Fecha Inicio</label>
+                                <input type="date" id="fechaInicioVentas" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha Fin</label>
+                                <input type="date" id="fechaFinVentas" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-file-pdf"></i> Generar Reporte
+                            </button>
+                        </form>
+                    </div>
+                    <div class="reporte-card">
+                        <h3>Servicios Más Solicitados</h3>
+                        <canvas id="serviciosChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
 
     <!-- Modals -->
-    
-    <!-- Modal Persona -->
-    <div id="personaModal" class="modal">
+    <!-- Cliente Modal -->
+    <div id="clienteModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Nueva Persona</h2>
-                <span class="close" onclick="closeModal('personaModal')">&times;</span>
+                <h3>Registrar Cliente</h3>
+                <span class="close" onclick="closeModal('clienteModal')">&times;</span>
             </div>
-            <div class="modal-body">
-                <form class="form-grid">
-                    <div class="form-group">
-                        <label>Tipo de Documento</label>
-                        <select>
+            <form id="clienteForm">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Nombres</label>
+                        <input type="text" name="nombres" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Apellido Paterno</label>
+                        <input type="text" name="apellido_paterno" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Apellido Materno</label>
+                        <input type="text" name="apellido_materno" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Tipo Documento</label>
+                        <select name="tipo_documento" class="form-control" required>
                             <option value="DNI">DNI</option>
-                            <option value="CE">Carnet de Extranjería</option>
-                            <option value="PASAPORTE">Pasaporte</option>
+                            <option value="CE">CE</option>
+                            <option value="PAS">Pasaporte</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>N° Documento</label>
-                        <input type="text" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Número Documento</label>
+                        <input type="text" name="num_documento" class="form-control" required>
                     </div>
-                    <div class="form-group">
-                        <label>Nombres</label>
-                        <input type="text" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Apellido Paterno</label>
-                        <input type="text" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Apellido Materno</label>
-                        <input type="text" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Fecha de Nacimiento</label>
-                        <input type="date">
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>Sexo</label>
-                        <select>
+                        <select name="sexo" class="form-control" required>
                             <option value="M">Masculino</option>
                             <option value="F">Femenino</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Correo</label>
-                        <input type="email">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Fecha Nacimiento</label>
+                        <input type="date" name="fecha_nacimiento" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>Celular</label>
-                        <input type="tel" required>
+                        <input type="tel" name="celular" class="form-control" required>
                     </div>
-                    <div class="form-group">
-                        <label>Teléfono</label>
-                        <input type="tel">
-                    </div>
-                    <div class="form-group full-width">
-                        <label>Dirección</label>
-                        <input type="text">
-                    </div>
-                    <div class="form-group">
-                        <label>Distrito</label>
-                        <input type="text">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('personaModal')">Cancelar</button>
-                <button class="btn btn-primary">Guardar</button>
-            </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="correo" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Dirección</label>
+                    <textarea name="direccion" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('clienteModal')">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Modal Servicio -->
+    <!-- Servicio Modal -->
     <div id="servicioModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Nuevo Servicio</h2>
+                <h3>Registrar Servicio</h3>
                 <span class="close" onclick="closeModal('servicioModal')">&times;</span>
             </div>
-            <div class="modal-body">
-                <form class="form-grid">
-                    <div class="form-group">
-                        <label>Categoría</label>
-                        <select required>
-                            <option value="">Seleccionar...</option>
-                            <option value="1">Sacramentos</option>
-                            <option value="2">Celebraciones</option>
-                            <option value="3">Documentos</option>
-                            <option value="4">Servicios Especiales</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Código</label>
-                        <input type="text" required>
-                    </div>
-                    <div class="form-group full-width">
-                        <label>Nombre del Servicio</label>
-                        <input type="text" required>
-                    </div>
-                    <div class="form-group full-width">
-                        <label>Descripción</label>
-                        <textarea rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Precio (S/)</label>
-                        <input type="number" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Duración (minutos)</label>
-                        <input type="number">
-                    </div>
-                    <div class="form-group">
-                        <label>Requiere Cita</label>
-                        <input type="checkbox">
-                    </div>
-                    <div class="form-group">
-                        <label>Máximo por Día</label>
-                        <input type="number">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('servicioModal')">Cancelar</button>
-                <button class="btn btn-primary">Guardar</button>
-            </div>
+            <form id="servicioForm">
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select name="id_categoria" class="form-control" required>
+                        <option value="">Seleccione categoría</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea name="descripcion" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Precio</label>
+                    <input type="number" name="precio" class="form-control" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="requiere_cita"> Requiere Cita
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('servicioModal')">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Modal Evento -->
-    <div id="eventoModal" class="modal">
+    <!-- Agendar Modal -->
+    <div id="agendarModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Nuevo Evento</h2>
-                <span class="close" onclick="closeModal('eventoModal')">&times;</span>
+                <h3>Agendar Servicio</h3>
+                <span class="close" onclick="closeModal('agendarModal')">&times;</span>
             </div>
-            <div class="modal-body">
-                <form class="form-grid">
-                    <div class="form-group">
-                        <label>Tipo de Evento</label>
-                        <select required>
-                            <option value="">Seleccionar...</option>
-                            <option value="MISA">Misa</option>
-                            <option value="BAUTISMO">Bautismo</option>
-                            <option value="MATRIMONIO">Matrimonio</option>
-                            <option value="DOCUMENTO">Documento</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Servicio</label>
-                        <select required>
-                            <option value="">Seleccionar...</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Cliente</label>
-                        <input type="text" placeholder="Buscar cliente..." required>
-                    </div>
-                    <div class="form-group">
-                        <label>Fecha</label>
-                        <input type="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Hora</label>
-                        <input type="time" required>
-                    </div>
-                    <div class="form-group full-width">
-                        <label>Observaciones</label>
-                        <textarea rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('eventoModal')">Cancelar</button>
-                <button class="btn btn-primary">Guardar</button>
-            </div>
+            <form id="agendarForm">
+                <div class="form-group">
+                    <label>Cliente</label>
+                    <select name="id_cliente" class="form-control" required>
+                        <option value="">Seleccione cliente</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Servicio</label>
+                    <select name="id_servicio" class="form-control" required>
+                        <option value="">Seleccione servicio</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha y Hora</label>
+                    <input type="datetime-local" name="fecha_hora" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Observaciones</label>
+                    <textarea name="observaciones" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Agendar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('agendarModal')">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Modal Venta -->
-    <div id="ventaModal" class="modal">
-        <div class="modal-content">
+    <!-- Empleado Modal -->
+    <div id="empleadoModal" class="modal">
+        <div class="modal-content modal-lg">
             <div class="modal-header">
-                <h2>Procesar Venta</h2>
-                <span class="close" onclick="closeModal('ventaModal')">&times;</span>
+                <h3>Registrar Empleado</h3>
+                <span class="close" onclick="closeModal('empleadoModal')">&times;</span>
             </div>
-            <div class="modal-body">
-                <form class="form-grid">
-                    <div class="form-group">
-                        <label>Método de Pago</label>
-                        <select required>
-                            <option value="">Seleccionar...</option>
-                            <option value="EFE">Efectivo</option>
-                            <option value="YAP">Yape</option>
-                            <option value="TRAN">Transferencia</option>
-                            <option value="PLIN">Plin</option>
+            <form id="empleadoForm">
+                <h4>Datos Personales</h4>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>Nombres</label>
+                        <input type="text" name="nombres" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Apellido Paterno</label>
+                        <input type="text" name="apellido_paterno" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Apellido Materno</label>
+                        <input type="text" name="apellido_materno" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>Tipo Documento</label>
+                        <select name="tipo_documento" class="form-control" required>
+                            <option value="DNI">DNI</option>
+                            <option value="CE">CE</option>
+                            <option value="PAS">Pasaporte</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Total a Pagar</label>
-                        <input type="number" readonly id="totalPagar">
+                    <div class="form-group col-md-4">
+                        <label>Número Documento</label>
+                        <input type="text" name="num_documento" class="form-control" required>
                     </div>
-                    <div class="form-group">
-                        <label>Monto Recibido</label>
-                        <input type="number" step="0.01" required>
+                    <div class="form-group col-md-4">
+                        <label>Sexo</label>
+                        <select name="sexo" class="form-control" required>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label>Vuelto</label>
-                        <input type="number" readonly>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>Fecha Nacimiento</label>
+                        <input type="date" name="fecha_nacimiento" class="form-control">
                     </div>
-                    <div class="form-group full-width">
-                        <label>Referencia de Pago</label>
-                        <input type="text" placeholder="N° operación, etc.">
+                    <div class="form-group col-md-4">
+                        <label>Celular</label>
+                        <input type="tel" name="celular" class="form-control" required>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('ventaModal')">Cancelar</button>
-                <button class="btn btn-success">Procesar Venta</button>
-            </div>
+                    <div class="form-group col-md-4">
+                        <label>Email</label>
+                        <input type="email" name="correo" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Dirección</label>
+                    <textarea name="direccion" class="form-control" rows="2"></textarea>
+                </div>
+                
+                <h4>Datos Laborales</h4>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label>Rol</label>
+                        <select name="id_rol" class="form-control" required>
+                            <option value="">Seleccione rol</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Contrato</label>
+                        <select name="id_contrato" class="form-control" required>
+                            <option value="">Seleccione contrato</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Turno</label>
+                        <select name="id_turno" class="form-control" required>
+                            <option value="">Seleccione turno</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Salario</label>
+                        <input type="number" name="salario" class="form-control" step="0.01" required>
+                    </div>
+                </div>
+                
+                <h4>Datos de Usuario</h4>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Usuario</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Contraseña</label>
+                        <input type="password" name="clave" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('empleadoModal')">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
