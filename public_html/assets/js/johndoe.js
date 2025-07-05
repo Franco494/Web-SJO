@@ -153,9 +153,7 @@ const menusItemsDropdown = document.querySelectorAll('.menu-item-dropdown');
 const sidebar = document.getElementById('sidebar');
 const menuBtn = document.getElementById('menu-btn');
 
-menuBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('minimize'); 
-});
+
 
 menusItemsDropdown.forEach((menuItem) => {
     menuItem.addEventListener('click', () => {
@@ -183,4 +181,146 @@ menusItemsDropdown.forEach((menuItem) => {
         });  
     });
 });
+
+// Funcionalidad para el formulario de contacto
+// Agrega este código al final de tu archivo johndoe.js
+
+// Inicializar EmailJS (necesitas registrarte en https://www.emailjs.com/)
+(function(){
+    emailjs.init("7ldZOAZbKDxQlKH0A"); // Reemplaza con tu public key de EmailJS
+})();
+
+// Función para enviar el formulario
+function sendEmail(event) {
+    event.preventDefault(); // Prevenir el envío normal del formulario
+    
+    // Obtener los valores del formulario
+    const form = event.target;
+    const name = form.querySelector('input[type="text"]').value.trim();
+    const email = form.querySelector('input[type="email"]').value.trim();
+    const message = form.querySelector('textarea').value.trim();
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Validación básica
+    if (!name || !email || !message) {
+        showMessage('Por favor, completa todos los campos requeridos.', 'error');
+        return;
+    }
+    
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showMessage('Por favor, ingresa un email válido.', 'error');
+        return;
+    }
+    
+    // Cambiar texto del botón mientras se envía
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="ti-reload"></i> Enviando...';
+    submitBtn.disabled = true;
+    
+    // Parámetros para el template de EmailJS
+    const templateParams = {
+        from_name: name,
+        from_email: email,
+        message: message,
+        to_email: 'cupejoaquin1@gmail.com'
+    };
+    
+    // Enviar email usando EmailJS
+    emailjs.send('service_2bfgmmi', 'template_8b1lzp4', templateParams)
+        .then(function(response) {
+            console.log('Email enviado exitosamente!', response.status, response.text);
+            showMessage('¡Mensaje enviado exitosamente! Te contactaremos pronto.', 'success');
+            form.reset(); // Limpiar el formulario
+        }, function(error) {
+            console.log('Error al enviar el email:', error);
+            showMessage('Error al enviar el mensaje. Por favor, intenta nuevamente.', 'error');
+        })
+        .finally(function() {
+            // Restaurar el botón
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+}
+
+// Función para mostrar mensajes al usuario
+function showMessage(message, type) {
+    // Crear elemento de mensaje
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 300px;
+        max-width: 500px;
+    `;
+    
+    messageDiv.innerHTML = `
+        ${message}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    `;
+    
+    // Agregar al DOM
+    document.body.appendChild(messageDiv);
+    
+    // Auto-remover después de 5 segundos
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
+            messageDiv.parentNode.removeChild(messageDiv);
+        }
+    }, 5000);
+}
+
+// Agregar el event listener al formulario cuando el DOM esté listo
+$(document).ready(function() {
+    const contactForm = document.querySelector('.contact-form-card form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', sendEmail);
+    }
+});
+
+// Alternativa sin EmailJS usando Formspree (más simple)
+// Si prefieres usar Formspree, reemplaza la función sendEmail con esta:
+/*
+function sendEmailWithFormspree(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Cambiar texto del botón
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="ti-reload"></i> Enviando...';
+    submitBtn.disabled = true;
+    
+    fetch('https://formspree.io/f/TU_FORM_ID', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            showMessage('¡Mensaje enviado exitosamente!', 'success');
+            form.reset();
+        } else {
+            throw new Error('Error en el servidor');
+        }
+    })
+    .catch(error => {
+        showMessage('Error al enviar el mensaje. Intenta nuevamente.', 'error');
+    })
+    .finally(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+}
+*/
 
