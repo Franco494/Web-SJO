@@ -218,6 +218,9 @@ body {
 .btn-primary {
     background-color: var(--primary-color);
     color: var(--white-color);
+    margin: 0.5rem;
+    padding: 0.75rem 2rem;
+    gap: 1rem;
 }
 
 .btn-primary:hover {
